@@ -733,8 +733,7 @@ if __name__ == "__main__":
         model_path=MODEL_PATH,
         seed=42,
         n_gpu_layers=-1,
-        low_vram=True,
-        verbose=False,
+        # low_vram=True,
         n_ctx=8192,
     )
 
