@@ -28,3 +28,4 @@ openai
 tiktoken
 llama-cpp-python
 Cython
+gdown
