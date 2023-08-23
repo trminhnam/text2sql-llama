@@ -453,6 +453,11 @@ else:
         "Please use this format python CoT.py --dataset data/ --output predicted_sql.txt"
     )
 
+if sys.argv[5] == "--debug":
+    DEBUG = True
+else:
+    DEBUG = False
+
 API_KEY = "abc"  # key
 os.environ["OPENAI_API_KEY"] = API_KEY
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -849,7 +854,7 @@ if __name__ == "__main__":
         SQL = "SELECT " + debugged_SQL
         print(SQL)
         CODEX.append([row["question"], SQL, row["query"], row["db_id"]])
-        if index == 1:
+        if index == 1 and DEBUG:
             break
     df = pd.DataFrame(CODEX, columns=["NLQ", "PREDICTED SQL", "GOLD SQL", "DATABASE"])
     results = df["PREDICTED SQL"].tolist()
