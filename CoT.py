@@ -4,15 +4,7 @@ import openai
 import os
 import sys
 from llama_cpp import Llama
-
-llm = Llama(
-    model_path="models/7B/llama-2-7b-chat.ggmlv3.q4_0.bin",
-    seed=42,
-    n_gpu_layers=-1,
-    low_vram=True,
-    verbose=False,
-    n_ctx=8192,
-)
+import argparse
 
 
 # ----------------------------------------------------prompts-----------------------------------------------
@@ -444,20 +436,6 @@ SQL: SELECT T3.title ,  T3.credits FROM classroom AS T1 JOIN SECTION AS T2 ON T1
 """
 # ----------------------------------------------------------------------------------------------------------
 
-if sys.argv[1] == "--dataset" and sys.argv[3] == "--output":
-    DATASET_SCHEMA = sys.argv[2] + "tables.json"
-    DATASET = sys.argv[2] + "dev.json"
-    OUTPUT_FILE = sys.argv[4]
-else:
-    raise Exception(
-        "Please use this format python CoT.py --dataset data/ --output predicted_sql.txt"
-    )
-
-if sys.argv[5] == "--debug":
-    DEBUG = True
-else:
-    DEBUG = False
-
 API_KEY = "abc"  # key
 os.environ["OPENAI_API_KEY"] = API_KEY
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -691,20 +669,7 @@ def debuger(test_sample_text, database, sql):
     return prompt
 
 
-def GPT4_generation(prompt):
-    # response = openai.ChatCompletion.create(
-    #     model="gpt-4",
-    #     messages=[{"role": "user", "content": prompt}],
-    #     n=1,
-    #     stream=False,
-    #     temperature=0.0,
-    #     max_tokens=600,
-    #     top_p=1.0,
-    #     frequency_penalty=0.0,
-    #     presence_penalty=0.0,
-    #     stop=["Q:"],
-    # )
-    # return response["choices"][0]["message"]["content"]
+def ask_llm(llm, prompt):
     results = llm(
         prompt,
         max_tokens=600,
@@ -717,7 +682,7 @@ def GPT4_generation(prompt):
     return results["choices"][0]["text"]
 
 
-def GPT4_debug(prompt):
+def ask_llm_debug(llm, prompt):
     # response = openai.ChatCompletion.create(
     #     model="gpt-4",
     #     messages=[{"role": "user", "content": prompt}],
@@ -744,16 +709,36 @@ def GPT4_debug(prompt):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser.add_argument(
+        "--dataset", type=str, help="spider dataset path", required=True
+    )
+    parser.add_argument(
+        "--output", type=str, default="predicted_sql.txt", help="output file"
+    )
+    parser.add_argument(
+        "--model_path", type=str, help="path to llama model", required=True
+    )
+    parser.add_argument("--debug", action="store_true", help="debug mode")
+
+    args = parser.parse_args()
+
+    DATASET_SCHEMA = os.path.join(args.dataset, "tables.json")
+    DATASET = os.path.join(args.dataset, "dev.json")
+    OUTPUT_FILE = args.output
+    MODEL_PATH = args.model_path
+    DEBUG = args.debug
+
+    llm = Llama(
+        model_path=MODEL_PATH,
+        seed=42,
+        n_gpu_layers=-1,
+        low_vram=True,
+        verbose=False,
+        n_ctx=8192,
+    )
+
     spider_schema, spider_primary, spider_foreign = creatiing_schema(DATASET_SCHEMA)
-
-    with open("spider_schema.json", "w") as f:
-        f.write(spider_schema.to_json(indent=4))
-
-    with open("spider_primary.json", "w") as f:
-        f.write(spider_primary.to_json(indent=4))
-
-    with open("spider_foreign.json", "w") as f:
-        f.write(spider_foreign.to_json(indent=4))
 
     val_df = load_data(DATASET)
     print(f"Number of data samples {val_df.shape[0]}")
@@ -766,8 +751,8 @@ if __name__ == "__main__":
         schema_links = None
         while schema_links is None:
             try:
-                schema_links = GPT4_generation(
-                    schema_linking_prompt_maker(row["question"], row["db_id"])
+                schema_links = ask_llm(
+                    llm, schema_linking_prompt_maker(row["question"], row["db_id"])
                 )
             except:
                 time.sleep(3)
@@ -781,10 +766,11 @@ if __name__ == "__main__":
         classification = None
         while classification is None:
             try:
-                classification = GPT4_generation(
+                classification = ask_llm(
+                    llm,
                     classification_prompt_maker(
                         row["question"], row["db_id"], schema_links[1:]
-                    )
+                    ),
                 )
             except:
                 time.sleep(3)
@@ -800,8 +786,9 @@ if __name__ == "__main__":
             SQL = None
             while SQL is None:
                 try:
-                    SQL = GPT4_generation(
-                        easy_prompt_maker(row["question"], row["db_id"], schema_links)
+                    SQL = ask_llm(
+                        llm,
+                        easy_prompt_maker(row["question"], row["db_id"], schema_links),
                     )
                 except:
                     time.sleep(3)
@@ -811,8 +798,11 @@ if __name__ == "__main__":
             SQL = None
             while SQL is None:
                 try:
-                    SQL = GPT4_generation(
-                        medium_prompt_maker(row["question"], row["db_id"], schema_links)
+                    SQL = ask_llm(
+                        llm,
+                        medium_prompt_maker(
+                            row["question"], row["db_id"], schema_links
+                        ),
                     )
                 except:
                     time.sleep(3)
@@ -828,10 +818,11 @@ if __name__ == "__main__":
             SQL = None
             while SQL is None:
                 try:
-                    SQL = GPT4_generation(
+                    SQL = ask_llm(
+                        llm,
                         hard_prompt_maker(
                             row["question"], row["db_id"], schema_links, sub_questions
-                        )
+                        ),
                     )
                 except:
                     time.sleep(3)
@@ -845,8 +836,8 @@ if __name__ == "__main__":
         debugged_SQL = None
         while debugged_SQL is None:
             try:
-                debugged_SQL = GPT4_debug(
-                    debuger(row["question"], row["db_id"], SQL)
+                debugged_SQL = ask_llm_debug(
+                    llm, debuger(row["question"], row["db_id"], SQL)
                 ).replace("\n", " ")
             except:
                 time.sleep(3)
