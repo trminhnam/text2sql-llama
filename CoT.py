@@ -732,7 +732,7 @@ if __name__ == "__main__":
     llm = Llama(
         model_path=MODEL_PATH,
         seed=42,
-        n_gpu_layers=-1,
+        n_gpu_layers=100000,
         # low_vram=True,
         n_ctx=8192,
     )
