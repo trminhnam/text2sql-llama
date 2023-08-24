@@ -683,18 +683,6 @@ def ask_llm(llm, prompt):
 
 
 def ask_llm_debug(llm, prompt):
-    # response = openai.ChatCompletion.create(
-    #     model="gpt-4",
-    #     messages=[{"role": "user", "content": prompt}],
-    #     n=1,
-    #     stream=False,
-    #     temperature=0.0,
-    #     max_tokens=350,
-    #     top_p=1.0,
-    #     frequency_penalty=0.0,
-    #     presence_penalty=0.0,
-    #     stop=["#", ";", "\n\n"],
-    # )
     response = llm(
         prompt,
         max_tokens=350,
@@ -720,6 +708,7 @@ if __name__ == "__main__":
         "--model_path", type=str, help="path to llama model", required=True
     )
     parser.add_argument("--debug", action="store_true", help="debug mode")
+    parser.add_argument("--ngl", type=int, default=0, help="n_gpu_layers")
 
     args = parser.parse_args()
 
@@ -732,8 +721,7 @@ if __name__ == "__main__":
     llm = Llama(
         model_path=MODEL_PATH,
         seed=42,
-        n_gpu_layers=100000,
-        # low_vram=True,
+        n_gpu_layers=args.ngl,
         n_ctx=8192,
     )
 
