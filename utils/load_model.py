@@ -60,7 +60,9 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             load_in_8bit=model_args.load_in_8bit,
             load_in_4bit=model_args.load_in_4bit,
             bnb_4bit_quant_type=model_args.bnb_4bit_quant_type,
-            bnb_4bit_compute_dtype=COMPUTE_DTYPE_MAPPING[model_args.compute_dtype],
+            bnb_4bit_compute_dtype=COMPUTE_DTYPE_MAPPING[
+                model_args.bnb_4bit_compute_dtype
+            ],
             bnb_4bit_use_double_quant=model_args.bnb_4bit_use_double_quant,
         )
 
