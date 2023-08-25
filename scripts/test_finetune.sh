@@ -63,7 +63,12 @@ export output_dir=$SESSION_DIR
 export save_steps=$eval_steps
 
 cd ..
-python finetune.py \
+# WORLD_SIZE=2
+export CUDA_VISIBLE_DEVICES=0
+export TOKENIZERS_PARALLELISM=false
+
+python -m torch.distributed.launch --use-env \
+    --nproc_per_node 1 finetune.py \
     --model_name_or_path $model_name_or_path \
     --dataset_name $dataset_name \
     --preprocessing_num_workers $preprocessing_num_workers \
