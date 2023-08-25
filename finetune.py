@@ -140,9 +140,9 @@ def train():
 
     def generate_and_tokenize_prompt(data_point):
         full_prompt = generate_prompt_sql(
-            data_point["input"],
+            data_point["question"],
             data_point["context"],
-            data_point["output"],
+            data_point["answer"],
         )
         tokenized_full_prompt = tokenize(full_prompt)
         # if not train_on_inputs:
