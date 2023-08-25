@@ -96,7 +96,6 @@ python finetune.py \
     --hub_strategy $hub_strategy \
     --save_steps $save_steps \
     --load_best_model_at_end \
-    --save_total_limit 5 \
     --lora_r $lora_r \
     --lora_target_modules $lora_target_modules \
     --lora_alpha $lora_alpha \
