@@ -80,8 +80,8 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
 
     # TODO: add special tokens
     if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
-        tokenizer.pad_token_id = tokenizer.eos_token_id
+        tokenizer.pad_token = tokenizer.unk_token
+        tokenizer.pad_token_id = tokenizer.unk_token_id
     #     smart_tokenizer_and_embedding_resize(
     #         special_tokens_dict=dict(pad_token="<pad>"),
     #         tokenizer=tokenizer,
