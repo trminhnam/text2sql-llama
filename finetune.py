@@ -111,7 +111,7 @@ def train():
 
     if data_args.val_set_size > 0 and "validation" not in dataset.keys():
         if "test" not in dataset.keys():
-            train_val_data = datasets["train"].train_test_split(
+            train_val_data = dataset["train"].train_test_split(
                 test_size=data_args.val_set_size, shuffle=True, seed=42
             )
         train_val_data["validation"] = train_val_data["test"]
