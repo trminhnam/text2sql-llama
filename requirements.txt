@@ -26,6 +26,5 @@ wrapt-timeout-decorator
 retry
 openai
 tiktoken
-llama-cpp-python
 Cython
 gdown

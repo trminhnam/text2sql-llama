@@ -1,0 +1,18 @@
+{
+    "model_name_or_path": "bert-base-uncased",
+    "load_in_4bit": true,
+    "bnb_4bit_quant_type": "nf4",
+    "bnb_4bit_compute_dtype": "bf16",
+    "bnb_4bit_use_double_quant": true,
+    "lora_r": 32,
+    "lora_alpha": 16,
+    "lora_dropout": 0.1,
+    "lora_target_modules": "q_proj,v_proj",
+    "dataset_name": "b-mc2/sql-create-context",
+    "model_max_length": 512,
+    "preprocessing_num_workers": 8,
+    "val_set_size": 2000,
+    "output_dir": "output",
+    "overwrite_output_dir": true,
+    "do_train": true
+}
