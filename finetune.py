@@ -1,19 +1,15 @@
+import logging
+import math
 import os
 import sys
-import math
-import logging
 
 import datasets
 import transformers
-from transformers import Trainer, HfArgumentParser
-from transformers.trainer_utils import get_last_checkpoint
 from datasets import load_dataset
+from transformers import HfArgumentParser, Trainer
+from transformers.trainer_utils import get_last_checkpoint
 
-from utils.arguments import (
-    ModelArguments,
-    DataArguments,
-    TextToSqlTrainingArguments,
-)
+from utils.arguments import DataArguments, ModelArguments, TextToSqlTrainingArguments
 from utils.load_model import load_model_with_peft_and_tokenizer
 from utils.prompter import generate_prompt_sql
 
@@ -63,6 +59,10 @@ def train():
     # Set the verbosity to info of the Transformers logger (on main process only):
     logger.info(f"Model parameters {model_args}")
     logger.info(f"Training/evaluation parameters {training_args}")
+
+    # Set seed before initializing model.
+    set_seed(training_args.seed)
+
     # Detecting last checkpoint.
     last_checkpoint = None
     if (

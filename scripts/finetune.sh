@@ -93,6 +93,7 @@ python finetune.py \
     --report_to $report_to \
     --run_name $WANDB_RUN \
     --logging_steps $logging_steps \
+    --logging_first_step \
     --hub_strategy $hub_strategy \
     --save_steps $save_steps \
     --load_best_model_at_end \

@@ -1,11 +1,11 @@
-import pandas as pd
-import time
-import openai
+import argparse
 import os
 import sys
-from llama_cpp import Llama
-import argparse
+import time
 
+import openai
+import pandas as pd
+from llama_cpp import Llama
 
 # ----------------------------------------------------prompts-----------------------------------------------
 schema_linking_prompt = """Table advisor, columns = [*,s_ID,i_ID]

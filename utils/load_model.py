@@ -2,17 +2,12 @@ from typing import Dict
 
 import torch
 import transformers
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    LlamaTokenizer,
     BitsAndBytesConfig,
-)
-
-from peft import (
-    LoraConfig,
-    get_peft_model,
-    prepare_model_for_kbit_training,
+    LlamaTokenizer,
 )
 
 COMPUTE_DTYPE_MAPPING = {
