@@ -85,7 +85,6 @@ def train():
     logger.info(f"Model parameters {model_args}")
     logger.info(f"Training/evaluation parameters {training_args}")
 
-    device_map = "auto"
     world_size = int(os.environ.get("WORLD_SIZE", 1))
     ddp = world_size != 1
     if ddp:
@@ -104,6 +103,7 @@ def train():
     dataset = load_dataset(
         data_args.dataset_name,
         data_args.dataset_config_name,
+        cache_dir=model_args.cache_dir,
     )
 
     # Determine model_max_length for truncation

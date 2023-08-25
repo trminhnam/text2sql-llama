@@ -68,6 +68,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
     model = AutoModelForCausalLM.from_pretrained(
         model_args.model_name_or_path,
         quantization_config=bnb_config,
+        cache_dir=model_args.cache_dir,
     )
 
     # TODO: load tokenizer
