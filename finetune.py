@@ -12,6 +12,7 @@ from transformers.trainer_utils import get_last_checkpoint
 from utils.arguments import DataArguments, ModelArguments, TextToSqlTrainingArguments
 from utils.load_model import load_model_with_peft_and_tokenizer
 from utils.prompter import generate_prompt_sql
+from utils.another_utils import set_seed
 
 logger = logging.getLogger(__name__)
 
