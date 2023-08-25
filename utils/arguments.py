@@ -146,4 +146,7 @@ class DataArguments:
 
 @dataclass
 class TextToSqlTrainingArguments(TrainingArguments):
-    pass
+    wandb_project: Optional[str] = field(
+        default="text-to-sql",
+        metadata={"help": "The name of the W&B project to log to."},
+    )
