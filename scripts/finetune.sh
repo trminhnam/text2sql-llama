@@ -98,7 +98,6 @@ python finetune.py \
     --save_steps $save_steps \
     --load_best_model_at_end \
     --save_total_limit 5 \
-    --peft_type $peft_type \
     --lora_r $lora_r \
     --lora_target_modules $lora_target_modules \
     --lora_alpha $lora_alpha \

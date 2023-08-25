@@ -90,6 +90,13 @@ class ModelArguments:
         metadata={"help": "Names of the modules to apply Lora to."},
     )
 
+    cache_dir: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "Where do you want to store the pretrained models downloaded from huggingface.co"
+        },
+    )
+
 
 @dataclass
 class DataArguments:
@@ -115,6 +122,25 @@ class DataArguments:
     )
     val_set_size: Optional[int] = field(
         default=2000, metadata={"help": "The validation set size. For loss checking."}
+    )
+
+    max_train_samples: Optional[int] = field(
+        default=None,
+        metadata={
+            "help": (
+                "For debugging purposes or quicker training, truncate the number of training examples to this "
+                "value if set."
+            )
+        },
+    )
+    max_eval_samples: Optional[int] = field(
+        default=None,
+        metadata={
+            "help": (
+                "For debugging purposes or quicker training, truncate the number of evaluation examples to this "
+                "value if set."
+            )
+        },
     )
 
 
