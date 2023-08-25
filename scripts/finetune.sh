@@ -107,3 +107,4 @@ python finetune.py \
     --bnb_4bit_compute_dtype "bf16" \
     --bnb_4bit_use_double_quant \
     --bf16 \
+    --bf16_full_eval \
