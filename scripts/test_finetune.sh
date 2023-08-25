@@ -36,7 +36,7 @@ export dataloader_num_workers=8
 export train_batch_size=16
 export learning_rate=5e-5
 export num_train_epochs=128
-export max_steps=-1
+export max_steps=10
 export max_train_samples=10000000
 export gradient_accumulation_steps=32
 export optim=adamw_bnb_8bit
@@ -44,7 +44,7 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=10
+export eval_steps=5
 export eval_batch_size=64
 export max_eval_samples=1000000
 
@@ -112,3 +112,4 @@ python -m torch.distributed.launch --use-env \
     --bnb_4bit_compute_dtype "bf16" \
     --bnb_4bit_use_double_quant \
     --bf16 \
+    --bf16_full_eval \
