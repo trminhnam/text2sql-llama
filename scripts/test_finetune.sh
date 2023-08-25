@@ -33,12 +33,12 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=8
+export train_batch_size=16
 export learning_rate=5e-5
 export num_train_epochs=20
 export max_steps=100
 export max_train_samples=10000000
-export gradient_accumulation_steps=16
+export gradient_accumulation_steps=8
 export optim=adamw_bnb_8bit
 export warmup_ratio=0.06
 
