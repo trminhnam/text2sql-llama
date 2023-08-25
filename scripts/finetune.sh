@@ -33,19 +33,19 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=16
+export train_batch_size=32
 export learning_rate=5e-5
 export num_train_epochs=20
 export max_steps=-1
 export max_train_samples=10000000
-export gradient_accumulation_steps=8
+export gradient_accumulation_steps=32
 export optim=adamw_bnb_8bit
 export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
 export eval_steps=5000
-export eval_batch_size=16
+export eval_batch_size=64
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
@@ -53,7 +53,7 @@ export hub_model_id=$SESSION_NAME
 export hub_token=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
 export hub_strategy=all_checkpoints
 export report_to=wandb
-export logging_steps=500
+export logging_steps=100
 
 # Directories
 export cache_dir=$BASE_DIR/cache
@@ -85,7 +85,6 @@ python finetune.py \
     --hub_strategy $hub_strategy \
     --optim $optim \
     --warmup_ratio $warmup_ratio \
-    --fp16 \
     --do_eval \
     --evaluation_strategy $evaluation_strategy \
     --eval_steps $eval_steps \
@@ -103,3 +102,8 @@ python finetune.py \
     --lora_alpha $lora_alpha \
     --lora_dropout $lora_dropout \
     --lora_bias $lora_bias \
+    --load_in_4bit \
+    --bnb_4bit_quant_type "nf4"\
+    --bnb_4bit_compute_dtype "bf16" \
+    --bnb_4bit_use_double_quant \
+    --bf16 \
