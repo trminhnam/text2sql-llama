@@ -1,34 +1,16 @@
-import re
 import os
 import sys
-import glob
 import math
 import logging
-import argparse
-import numpy as np
-from typing import Dict, List, Optional, Sequence
-from dataclasses import dataclass, field
 
-import torch
 import datasets
 import transformers
 from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    LlamaTokenizer,
     Trainer,
     HfArgumentParser,
-    TrainingArguments,
+    get_last_checkpoint,
 )
-from datasets import load_dataset, concatenate_datasets, DatasetDict
-
-from peft import (
-    LoraConfig,
-    get_peft_model,
-    get_peft_model_state_dict,
-    set_peft_model_state_dict,
-    prepare_model_for_kbit_training,
-)
+from datasets import load_dataset
 
 from utils.arguments import (
     ModelArguments,
@@ -84,7 +66,26 @@ def train():
     # Set the verbosity to info of the Transformers logger (on main process only):
     logger.info(f"Model parameters {model_args}")
     logger.info(f"Training/evaluation parameters {training_args}")
-
+    # Detecting last checkpoint.
+    last_checkpoint = None
+    if (
+        os.path.isdir(training_args.output_dir)
+        and training_args.do_train
+        and not training_args.overwrite_output_dir
+    ):
+        last_checkpoint = get_last_checkpoint(training_args.output_dir)
+        if last_checkpoint is None and len(os.listdir(training_args.output_dir)) > 0:
+            raise ValueError(
+                f"Output directory ({training_args.output_dir}) already exists and is not empty. "
+                "Use --overwrite_output_dir to overcome."
+            )
+        elif (
+            last_checkpoint is not None and training_args.resume_from_checkpoint is None
+        ):
+            logger.info(
+                f"Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change "
+                "the `--output_dir` or add `--overwrite_output_dir` to train from scratch."
+            )
     world_size = int(os.environ.get("WORLD_SIZE", 1))
     ddp = world_size != 1
     if ddp:
@@ -174,17 +175,81 @@ def train():
     )
     model.config.use_cache = False
 
-    old_state_dict = model.state_dict
-    model.state_dict = (
-        lambda self, *_, **__: get_peft_model_state_dict(self, old_state_dict())
-    ).__get__(model, type(model))
+    # Training
+    if training_args.do_train:
+        checkpoint = None
+        if training_args.resume_from_checkpoint is not None:
+            checkpoint = training_args.resume_from_checkpoint
+        elif last_checkpoint is not None:
+            checkpoint = last_checkpoint
+        train_result = trainer.train(resume_from_checkpoint=checkpoint)
+        trainer.save_model()  # Saves the tokenizer too for easy upload
 
-    if torch.__version__ >= "2" and sys.platform != "win32":
-        model = torch.compile(model)
+        metrics = train_result.metrics
 
-    trainer.train()
+        max_train_samples = (
+            data_args.max_train_samples
+            if data_args.max_train_samples is not None
+            else len(train_data)
+        )
+        metrics["train_samples"] = min(max_train_samples, len(train_data))
 
-    model.save_pretrained(training_args.output_dir)
+        trainer.log_metrics("train", metrics)
+        trainer.save_metrics("train", metrics)
+        trainer.save_state()
+
+    # Evaluation
+    if training_args.do_eval:
+        logger.info("*** Evaluate ***")
+
+        metrics = trainer.evaluate()
+
+        max_eval_samples = (
+            data_args.max_eval_samples
+            if data_args.max_eval_samples is not None
+            else len(val_data)
+        )
+        metrics["eval_samples"] = min(max_eval_samples, len(val_data))
+        try:
+            perplexity = math.exp(metrics["eval_loss"])
+        except OverflowError:
+            perplexity = float("inf")
+        metrics["perplexity"] = perplexity
+
+        trainer.log_metrics("eval", metrics)
+        trainer.save_metrics("eval", metrics)
+
+    kwargs = {
+        "finetuned_from": model_args.model_name_or_path,
+        "tasks": "text-generation",
+        # "peft_type": PEFT_TYPE_MAPPING_CONFIG[peft_args.peft_type][1],
+    }
+    if data_args.dataset_name is not None:
+        kwargs["dataset_tags"] = data_args.dataset_name
+        if data_args.dataset_config_name is not None:
+            kwargs["dataset_args"] = data_args.dataset_config_name
+            kwargs[
+                "dataset"
+            ] = f"{data_args.dataset_name} {data_args.dataset_config_name}"
+        else:
+            kwargs["dataset"] = data_args.dataset_name
+
+    if training_args.push_to_hub:
+        trainer.push_to_hub(**kwargs)
+    else:
+        trainer.create_model_card(**kwargs)
+
+    # old_state_dict = model.state_dict
+    # model.state_dict = (
+    #     lambda self, *_, **__: get_peft_model_state_dict(self, old_state_dict())
+    # ).__get__(model, type(model))
+
+    # if torch.__version__ >= "2" and sys.platform != "win32":
+    #     model = torch.compile(model)
+
+    # trainer.train()
+
+    # model.save_pretrained(training_args.output_dir)
 
 
 if __name__ == "__main__":
