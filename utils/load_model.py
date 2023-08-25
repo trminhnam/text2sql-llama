@@ -72,6 +72,8 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         quantization_config=bnb_config,
         cache_dir=model_args.cache_dir,
     )
+    print(model)
+    exit()
 
     # TODO: load tokenizer
     tokenizer_class = (
