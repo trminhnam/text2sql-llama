@@ -90,7 +90,6 @@ python -m torch.distributed.launch --use-env \
     --hub_strategy $hub_strategy \
     --optim $optim \
     --warmup_ratio $warmup_ratio \
-    --fp16 \
     --do_eval \
     --evaluation_strategy $evaluation_strategy \
     --eval_steps $eval_steps \
