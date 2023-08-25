@@ -5,11 +5,8 @@ import logging
 
 import datasets
 import transformers
-from transformers import (
-    Trainer,
-    HfArgumentParser,
-    get_last_checkpoint,
-)
+from transformers import Trainer, HfArgumentParser
+from transformers.trainer_utils import get_last_checkpoint
 from datasets import load_dataset
 
 from utils.arguments import (
