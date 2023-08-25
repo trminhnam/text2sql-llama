@@ -55,7 +55,7 @@ def smart_tokenizer_and_embedding_resize(
 def load_model_with_peft_and_tokenizer(model_args, training_args):
     # TODO: prepare quantization config
     bnb_config = None
-    if model_args.kbit_training:
+    if model_args.load_in_8bit or model_args.load_in_4bit:
         bnb_config = BitsAndBytesConfig(
             load_in_8bit=model_args.load_in_8bit,
             load_in_4bit=model_args.load_in_4bit,
