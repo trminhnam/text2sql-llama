@@ -33,7 +33,7 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=4
+export train_batch_size=8
 export learning_rate=5e-5
 export num_train_epochs=20
 export max_steps=100
@@ -107,3 +107,8 @@ python -m torch.distributed.launch --use-env \
     --lora_alpha $lora_alpha \
     --lora_dropout $lora_dropout \
     --lora_bias $lora_bias \
+    --load_in_4bit \
+    --bnb_4bit_quant_type "nf4"\
+    --bnb_4bit_compute_dtype "bf16" \
+    --bnb_4bit_use_double_quant \
+    --bf16
