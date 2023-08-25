@@ -33,7 +33,7 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=32
+export train_batch_size=16
 export learning_rate=5e-5
 export num_train_epochs=20
 export max_steps=-1
@@ -44,7 +44,7 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=5000
+export eval_steps=2000
 export eval_batch_size=64
 export max_eval_samples=1000000
 
