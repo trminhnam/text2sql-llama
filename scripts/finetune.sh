@@ -21,7 +21,7 @@ export PYTHONWARNINGS="ignore"
 export model_name_or_path=meta-llama/Llama-2-7b-hf
 
 # peft config
-export lora_r=2
+export lora_r=8
 export lora_target_modules=q_proj,v_proj
 export lora_alpha=8
 export lora_dropout=0.1
@@ -33,9 +33,9 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=16
+export train_batch_size=8
 export learning_rate=5e-5
-export num_train_epochs=128
+export num_train_epochs=64
 export max_steps=-1
 export max_train_samples=10000000
 export gradient_accumulation_steps=32
@@ -44,8 +44,8 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=2000
-export eval_batch_size=64
+export eval_steps=200
+export eval_batch_size=32
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
