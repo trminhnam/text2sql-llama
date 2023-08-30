@@ -29,6 +29,9 @@ def predict(model, tokenizer, prompt, device="cuda", args={}):
         attention_mask=inputs["attention_mask"],
         max_new_tokens=args.max_new_tokens,
         eos_token_id=tokenizer.eos_token_id,
+        num_beams=5,
+        early_stopping=True,
+        num_return_sequences=1,
     )
     return tokenizer.batch_decode(
         outputs.detach().cpu().numpy(), skip_special_tokens=True
@@ -74,14 +77,16 @@ if __name__ == "__main__":
         predictions.append(prediction)
 
         if idx % 100 == 0:
-            print(f"Predicted {idx} questions")
+            print(f"Predicted {idx}-th question")
             print(f"Question: {question}")
             print(f"Prediction: {prediction}")
             print(f"Correct: {row['query']}")
+            print("*" * 50)
             print()
 
         with open(predict_args.output_path + ".log", "a", encoding="utf-8") as f:
             f.write(prediction + "\n")
+        exit()
 
     with open(predict_args.output_path, "w", encoding="utf-8") as f:
         for prediction in predictions:
