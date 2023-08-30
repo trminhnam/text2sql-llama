@@ -28,10 +28,9 @@ def predict(model, tokenizer, prompt, device="cuda", args={}):
         input_ids=inputs["input_ids"],
         attention_mask=inputs["attention_mask"],
         max_new_tokens=args.max_new_tokens,
-        eos_token_id=tokenizer.eos_token_id,
-        num_beams=5,
-        early_stopping=True,
-        num_return_sequences=1,
+        # num_beams=5,
+        # early_stopping=True,
+        # num_return_sequences=1,
     )
     return tokenizer.batch_decode(
         outputs.detach().cpu().numpy(), skip_special_tokens=True
@@ -40,7 +39,12 @@ def predict(model, tokenizer, prompt, device="cuda", args={}):
 
 def get_sql_statement(prediction):
     idx = prediction.find("### Response:\n")
-    return prediction[idx + len("### Response:\n") :]
+    prediction = prediction[idx + len("### Response:\n") :]
+    if "\n\n" in prediction:
+        prediction = prediction.split("\n\n")[0]
+    if ";" in prediction:
+        prediction = prediction.split(";")[0]
+    return prediction
 
 
 if __name__ == "__main__":
