@@ -49,11 +49,11 @@ if __name__ == "__main__":
 
     # load spider dataset: schema, primary key, foreign key
     spider_schema, spider_primary, spider_foreign = creating_schema(
-        predict_args.dataset_dir + "tables.json"
+        os.path.join(predict_args.dataset_dir, "tables.json")
     )
 
     # load dev dataset
-    dev_dataset = pd.read_json(predict_args.dataset_dir + "dev.json")
+    dev_dataset = pd.read_json(os.path.join(predict_args.dataset_dir, "dev.json"))
 
     # load model and tokenizer with path
     model, tokenizer = load_model_with_peft_and_tokenizer(predict_args, training_args)
