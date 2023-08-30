@@ -57,7 +57,9 @@ if __name__ == "__main__":
 
     # load model and tokenizer with path
     model, tokenizer = load_model_with_peft_and_tokenizer(predict_args, training_args)
-    device = "cuda" if torch.cuda.is_available() and not predict_args.no_cuda else "cpu"
+    device = (
+        "cuda" if (torch.cuda.is_available() and not training_args.no_cuda) else "cpu"
+    )
     model.to(device)
 
     predictions = []
