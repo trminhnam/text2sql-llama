@@ -80,6 +80,9 @@ if __name__ == "__main__":
             print(f"Correct: {row['query']}")
             print()
 
-    with open(predict_args.output_path, "w") as f:
+        with open(predict_args.output_path + ".log", "a", encoding="utf-8") as f:
+            f.write(prediction + "\n")
+
+    with open(predict_args.output_path, "w", encoding="utf-8") as f:
         for prediction in predictions:
             f.write(prediction + "\n")
