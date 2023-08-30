@@ -34,6 +34,7 @@ cd ..
 python predict.py \
     --model_name_or_path $model_name_or_path \
     --dataset_dir $dataset_dir \
+    --output_dir $output_dir \
     --output_path $output_path \
     --cache_dir $cache_dir \
     --load_in_4bit \
