@@ -28,3 +28,4 @@ openai
 tiktoken
 Cython
 gdown
+langdetect

@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 import torch
+import regex as re
 
 from tqdm.auto import tqdm
 
@@ -37,6 +38,14 @@ def predict(model, tokenizer, prompt, device="cuda", args={}):
     )[0]
 
 
+def preprocess_text(text):
+    text = text.replace("\n", " ")
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"\(\s+", "(", text)
+    text = re.sub(r"\s+\)", ")", text)
+    return text
+
+
 def get_sql_statement(prediction):
     idx = prediction.find("### Response:\n")
     prediction = prediction[idx + len("### Response:\n") :].strip()
@@ -44,6 +53,7 @@ def get_sql_statement(prediction):
         prediction = prediction.split("\n\n")[0].strip()
     if ";" in prediction:
         prediction = prediction.split(";")[0].strip()
+    prediction = preprocess_text(prediction)
     return prediction
 
 
