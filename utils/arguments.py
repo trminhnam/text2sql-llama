@@ -71,6 +71,13 @@ class ModelArguments:
     )
 
     # TODO: LoRA parameters
+    peft_name_or_path: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "The name or path of the pretrained LoRA model to use for the adapter."
+        },
+    )
+
     lora_r: int = field(default=8, metadata={"help": "Lora rank."})
     lora_alpha: int = field(default=16, metadata={"help": "Lora alpha."})
     lora_dropout: float = field(default=0.05, metadata={"help": "Lora dropout."})
@@ -147,4 +154,22 @@ class TextToSqlTrainingArguments(TrainingArguments):
     wandb_project: Optional[str] = field(
         default="text-to-sql",
         metadata={"help": "The name of the W&B project to log to."},
+    )
+
+
+@dataclass
+class PredictArguments(ModelArguments):
+    dataset_dir: Optional[str] = field(
+        default="data/spider/",
+        metadata={"help": "The directory of the dataset to use."},
+    )
+
+    output_path: Optional[str] = field(
+        default="predictions.txt",
+        metadata={"help": "The path to save the predictions."},
+    )
+
+    max_new_tokens: Optional[int] = field(
+        default=100,
+        metadata={"help": "The maximum number of new tokens to generate."},
     )

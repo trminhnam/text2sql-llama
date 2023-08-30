@@ -2,7 +2,13 @@ from typing import Dict
 
 import torch
 import transformers
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from peft import (
+    LoraConfig,
+    get_peft_model,
+    prepare_model_for_kbit_training,
+    PeftModel,
+    PeftConfig,
+)
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -107,15 +113,29 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         model.enable_input_require_grads()
 
     # TODO attach lora to the model
-    config = LoraConfig(
-        r=model_args.lora_r,
-        lora_alpha=model_args.lora_alpha,
-        target_modules=model_args.lora_target_modules.split(","),
-        lora_dropout=model_args.lora_dropout,
-        bias=model_args.lora_bias,
-        task_type="CAUSAL_LM",
-    )
-    model = get_peft_model(model, config)
+    if model_args.peft_name_or_path is not None:
+        peft_model_id = model_args.peft_name_or_path
+        config = PeftConfig.from_pretrained(peft_model_id)
+        model = (
+            AutoModelForCausalLM.from_pretrained(
+                config.base_model_name_or_path,
+                quantization_config=bnb_config,
+                cache_dir=model_args.cache_dir,
+            )
+            if config.base_model_name_or_path != model_args.model_name_or_path
+            else model
+        )
+        model = PeftModel.from_pretrained(model, peft_model_id)
+    else:
+        config = LoraConfig(
+            r=model_args.lora_r,
+            lora_alpha=model_args.lora_alpha,
+            target_modules=model_args.lora_target_modules.split(","),
+            lora_dropout=model_args.lora_dropout,
+            bias=model_args.lora_bias,
+            task_type="CAUSAL_LM",
+        )
+        model = get_peft_model(model, config)
     model.print_trainable_parameters()
 
     return model, tokenizer
