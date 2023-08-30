@@ -173,3 +173,8 @@ class PredictArguments(ModelArguments):
         default=100,
         metadata={"help": "The maximum number of new tokens to generate."},
     )
+
+    no_cuda: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether to force the execution on CPU."},
+    )
