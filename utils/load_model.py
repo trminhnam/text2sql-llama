@@ -66,6 +66,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             ],
             bnb_4bit_use_double_quant=model_args.bnb_4bit_use_double_quant,
         )
+        print(f"Quantization config: {bnb_config}")
 
     # TODO: load model
     model = AutoModelForCausalLM.from_pretrained(
@@ -126,6 +127,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             else model
         )
         model = PeftModel.from_pretrained(model, peft_model_id)
+        print(f"Loaded PEFT model from {peft_model_id}")
     else:
         config = LoraConfig(
             r=model_args.lora_r,
