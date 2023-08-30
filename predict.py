@@ -38,6 +38,11 @@ def predict(model, tokenizer, prompt, device="cuda", args={}):
     )[0]
 
 
+def get_sql_statement(prediction):
+    idx = prediction.find("### Response:\n")
+    return prediction[idx + len("### Response:\n") :]
+
+
 if __name__ == "__main__":
     parser = HfArgumentParser(
         (
@@ -74,6 +79,7 @@ if __name__ == "__main__":
 
         prompt = generate_prompt_sql(question, context)
         prediction = predict(model, tokenizer, prompt, device, args=predict_args)
+        prediction = get_sql_statement(prediction)
         predictions.append(prediction)
 
         if idx % 100 == 0:
