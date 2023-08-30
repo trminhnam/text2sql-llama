@@ -29,3 +29,4 @@ tiktoken
 Cython
 gdown
 langdetect
+googletrans-python
