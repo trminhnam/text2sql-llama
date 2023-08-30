@@ -85,14 +85,15 @@ if __name__ == "__main__":
         if idx % 100 == 0:
             print(f"Predicted {idx}-th question")
             print(f"Question: {question}")
+            print(f"Context: {context}")
             print(f"Prediction: {prediction}")
-            print(f"Correct: {row['query']}")
+            print(f"Label: {row['query']}")
             print("*" * 50)
             print()
 
         with open(predict_args.output_path + ".log", "a", encoding="utf-8") as f:
             f.write(prediction + "\n")
-        exit()
+        # exit()
 
     with open(predict_args.output_path, "w", encoding="utf-8") as f:
         for prediction in predictions:
