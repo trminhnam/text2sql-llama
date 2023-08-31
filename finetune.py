@@ -145,8 +145,6 @@ def train():
             data_point["answer"],
         )
         tokenized_full_prompt = tokenize(full_prompt)
-        # if not train_on_inputs:
-        #     raise NotImplementedError("not implemented yet")
         return tokenized_full_prompt
 
     # with training_args.main_process_first(desc="dataset map tokenization"):
