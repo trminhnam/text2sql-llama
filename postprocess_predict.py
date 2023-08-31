@@ -19,7 +19,10 @@ def postprocess(text):
                 text = text[:end_idx]
 
             text = text.strip()
-            return text
+            break
+
+    if "select" not in text.lower():
+        text = "###"
 
     return text
 
