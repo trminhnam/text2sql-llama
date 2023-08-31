@@ -1,6 +1,6 @@
 from transformers import Trainer
 
-from transformers.utils.import_utils import is_pef_available
+from transformers.utils import is_peft_available
 from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
 from transformers.modeling_utils import unwrap_model
 
