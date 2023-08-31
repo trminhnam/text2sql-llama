@@ -126,7 +126,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             if config.base_model_name_or_path != model_args.model_name_or_path
             else model
         )
-        model = PeftModel.from_pretrained(model, peft_model_id)
+        model = PeftModel.from_pretrained(model, peft_model_id, is_trainable=True)
         print(f"Loaded PEFT model from {peft_model_id}")
     else:
         config = LoraConfig(
