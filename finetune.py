@@ -13,6 +13,7 @@ from utils.another_utils import set_seed
 from utils.arguments import DataArguments, ModelArguments, TextToSqlTrainingArguments
 from utils.load_model import load_model_with_peft_and_tokenizer
 from utils.prompter import generate_prompt_sql
+from utils.trainer import CustomTrainer
 
 logger = logging.getLogger(__name__)
 
@@ -162,7 +163,7 @@ def train():
         desc="preprocess val data set",
     )
 
-    trainer = Trainer(
+    trainer = CustomTrainer(
         model=model,
         train_dataset=train_data,
         eval_dataset=val_data,
