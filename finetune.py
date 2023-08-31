@@ -118,6 +118,8 @@ def train():
             train_val_data["validation"] = train_val_data["test"]
         else:
             raise ValueError("val_set_size must large than 0.")
+    else:
+        train_val_data = dataset
 
     def tokenize(prompt, add_eos_token=True):
         result = tokenizer(
