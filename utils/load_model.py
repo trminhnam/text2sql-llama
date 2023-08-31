@@ -117,15 +117,15 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
     if model_args.peft_name_or_path is not None:
         peft_model_id = model_args.peft_name_or_path
         config = PeftConfig.from_pretrained(peft_model_id)
-        model = (
-            AutoModelForCausalLM.from_pretrained(
-                config.base_model_name_or_path,
-                quantization_config=bnb_config,
-                cache_dir=model_args.cache_dir,
-            )
-            if config.base_model_name_or_path != model_args.model_name_or_path
-            else model
-        )
+        # model = (
+        #     AutoModelForCausalLM.from_pretrained(
+        #         config.base_model_name_or_path,
+        #         quantization_config=bnb_config,
+        #         cache_dir=model_args.cache_dir,
+        #     )
+        #     if config.base_model_name_or_path != model_args.model_name_or_path
+        #     else model
+        # )
         model = PeftModel.from_pretrained(model, peft_model_id, is_trainable=True)
         print(f"Loaded PEFT model from {peft_model_id}")
     else:
