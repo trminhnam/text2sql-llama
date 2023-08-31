@@ -144,7 +144,28 @@ def train():
             data_point["context"],
             data_point["answer"],
         )
-        tokenized_full_prompt = tokenize(full_prompt)
+        user_prompt = generate_prompt_sql(
+            data_point["question"],
+            data_point["context"],
+        )
+        user_prompt_len = len(
+            tokenizer(user_prompt, truncation=True, max_length=model_max_length)[
+                "input_ids"
+            ]
+        )
+
+        tokenized_full_prompt = tokenizer(
+            full_prompt + tokenizer.eos_token,
+            truncation=True,
+            max_length=model_max_length,
+        )
+        tokenized_full_prompt["labels"] = [
+            IGNORE_INDEX
+        ] * user_prompt_len + tokenized_full_prompt["input_ids"].copy()[
+            user_prompt_len:
+        ]
+        tokenized_full_prompt.pop("attention_mask")
+
         return tokenized_full_prompt
 
     # with training_args.main_process_first(desc="dataset map tokenization"):
