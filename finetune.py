@@ -109,14 +109,15 @@ def train():
     # Determine model_max_length for truncation
     model_max_length = data_args.model_max_length
 
-    if data_args.val_set_size > 0 and "validation" not in dataset.keys():
-        if "test" not in dataset.keys():
-            train_val_data = dataset["train"].train_test_split(
-                test_size=data_args.val_set_size, shuffle=True, seed=42
-            )
-        train_val_data["validation"] = train_val_data["test"]
-    else:
-        raise ValueError("val_set_size must large than 0.")
+    if "validation" not in dataset.keys():
+        if data_args.val_set_size > 0 and :
+            if "test" not in dataset.keys():
+                train_val_data = dataset["train"].train_test_split(
+                    test_size=data_args.val_set_size, shuffle=True, seed=42
+                )
+            train_val_data["validation"] = train_val_data["test"]
+        else:
+            raise ValueError("val_set_size must large than 0.")
 
     def tokenize(prompt, add_eos_token=True):
         result = tokenizer(
