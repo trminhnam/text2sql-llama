@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=baseline
+export SESSION_NAME=codellama_finetune_spider
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -18,7 +18,8 @@ export PYTHONWARNINGS="ignore"
 
 
 # Model parameters
-export model_name_or_path=meta-llama/Llama-2-7b-hf
+export model_name_or_path=codellama/CodeLlama-7b-hf
+export peft_name_or_path=tmnam20/codellama_instructtext2sql
 
 # peft config
 export lora_r=8
@@ -28,14 +29,14 @@ export lora_dropout=0.1
 export lora_bias=lora_only
 
 # dataset parameters
-export dataset_name=b-mc2/sql-create-context
+export dataset_name=tmnam20/SpiderInstruct
 export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
 export train_batch_size=8
 export learning_rate=5e-5
-export num_train_epochs=64
+export num_train_epochs=5
 export max_steps=-1
 export max_train_samples=10000000
 export gradient_accumulation_steps=32
@@ -97,11 +98,7 @@ python finetune.py \
     --hub_strategy $hub_strategy \
     --save_steps $save_steps \
     --load_best_model_at_end \
-    --lora_r $lora_r \
-    --lora_target_modules $lora_target_modules \
-    --lora_alpha $lora_alpha \
-    --lora_dropout $lora_dropout \
-    --lora_bias $lora_bias \
+    --peft_name_or_path $peft_name_or_path \
     --load_in_4bit \
     --bnb_4bit_quant_type "nf4"\
     --bnb_4bit_compute_dtype "bf16" \
