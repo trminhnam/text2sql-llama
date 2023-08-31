@@ -1,5 +1,5 @@
 torch
-transformers @ git+https://github.com/huggingface/transformers.git
+transformers @ git+https://github.com/huggingface/transformers.git@main 
 datasets
 accelerate
 evaluate
