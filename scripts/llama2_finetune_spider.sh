@@ -19,7 +19,7 @@ export PYTHONWARNINGS="ignore"
 
 # Model parameters
 export model_name_or_path=meta-llama/Llama-2-7b-hf
-export pef_name_or_path=tmnam20/llama2_sqlcreatecontext
+export peft_name_or_path=tmnam20/llama2_sqlcreatecontext
 
 # dataset parameters
 export dataset_name=tmnam20/SpiderInstruct
