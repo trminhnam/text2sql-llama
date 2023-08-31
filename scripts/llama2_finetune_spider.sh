@@ -27,7 +27,7 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=8
+export train_batch_size=4
 export learning_rate=5e-5
 export num_train_epochs=5
 export max_steps=-1
@@ -39,7 +39,7 @@ export warmup_ratio=0.06
 # Evaluation parameters
 export evaluation_strategy=steps
 export eval_steps=200
-export eval_batch_size=32
+export eval_batch_size=8
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
