@@ -110,7 +110,7 @@ def train():
     model_max_length = data_args.model_max_length
 
     if "validation" not in dataset.keys():
-        if data_args.val_set_size > 0 and :
+        if data_args.val_set_size > 0:
             if "test" not in dataset.keys():
                 train_val_data = dataset["train"].train_test_split(
                     test_size=data_args.val_set_size, shuffle=True, seed=42
