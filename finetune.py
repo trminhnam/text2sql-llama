@@ -98,6 +98,7 @@ def train():
         model_args,
         training_args,
     )
+    print(f"Model: {model}")
 
     # TODO: Load dataset from HF Hub
     dataset = load_dataset(
