@@ -34,8 +34,8 @@ export dataloader_num_workers=8
 
 # Training parameters
 export train_batch_size=8
-export learning_rate=5e-5
-export num_train_epochs=64
+export learning_rate=3e-4
+export num_train_epochs=16
 export max_steps=-1
 export max_train_samples=10000000
 export gradient_accumulation_steps=32
