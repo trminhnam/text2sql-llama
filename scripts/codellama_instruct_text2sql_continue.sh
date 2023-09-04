@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_instructtext2sql_continue
+export SESSION_NAME=codellama_instructtext2sql
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -49,7 +49,7 @@ export eval_batch_size=32
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
-export hub_model_id=codellama_instructtext2sql #$SESSION_NAME
+export hub_model_id=$SESSION_NAME
 export hub_token=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
 export hub_strategy=all_checkpoints
 export report_to=wandb
