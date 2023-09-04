@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_instructtext2sql2
+export SESSION_NAME=codellama_instructtext2sql_continue
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -49,7 +49,7 @@ export eval_batch_size=32
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
-export hub_model_id=$SESSION_NAME
+export hub_model_id=codellama_instructtext2sql #$SESSION_NAME
 export hub_token=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
 export hub_strategy=all_checkpoints
 export report_to=wandb
@@ -76,7 +76,6 @@ python finetune.py \
     --max_steps $max_steps \
     --max_train_samples $max_train_samples \
     --gradient_accumulation_steps $gradient_accumulation_steps \
-    --overwrite_output_dir \
     --push_to_hub \
     --hub_private_repo \
     --hub_model_id $hub_model_id \
@@ -107,5 +106,6 @@ python finetune.py \
     --bnb_4bit_use_double_quant \
     --bf16 \
     --bf16_full_eval \
+    --output_dir $output_dir \
     --resume_from_checkpoint $output_dir/checkpoint-600
-    # --output_dir $output_dir \
+    # --overwrite_output_dir \
