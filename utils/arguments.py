@@ -116,7 +116,7 @@ class DataArguments:
     )
 
     model_max_length: Optional[int] = field(
-        default=512,
+        default=1024,
         metadata={
             "help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
         },

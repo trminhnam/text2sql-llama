@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_instructtext2sql
+export SESSION_NAME=codellama_instructtext2sql_ver2
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -33,12 +33,12 @@ export preprocessing_num_workers=8
 export dataloader_num_workers=8
 
 # Training parameters
-export train_batch_size=8
+export train_batch_size=4 # 8
 export learning_rate=3e-4
 export num_train_epochs=16
 export max_steps=-1
 export max_train_samples=10000000
-export gradient_accumulation_steps=32
+export gradient_accumulation_steps=16 # 32
 export optim=adamw_bnb_8bit
 export warmup_ratio=0.06
 
