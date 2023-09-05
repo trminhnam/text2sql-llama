@@ -108,4 +108,3 @@ python finetune.py \
     --bf16 \
     --bf16_full_eval \
     --bnb_4bit_use_double_quant \
-    --resume_from_checkpoint $output_dir/checkpoint-500
