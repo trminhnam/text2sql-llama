@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_instructtext2sql_ver2
+export SESSION_NAME=codellama_instructtext2sql_chat
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -35,7 +35,7 @@ export dataloader_num_workers=8
 # Training parameters
 export train_batch_size=4 # 8
 export learning_rate=3e-4
-export num_train_epochs=8
+export num_train_epochs=5
 export max_steps=-1
 export max_train_samples=10000000
 export gradient_accumulation_steps=8 # 32
@@ -44,8 +44,8 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=800
-export eval_batch_size=16
+export eval_steps=1000
+export eval_batch_size=8
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
