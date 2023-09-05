@@ -192,7 +192,7 @@ def train():
         eval_dataset=val_data,
         args=training_args,
         data_collator=transformers.DataCollatorForSeq2Seq(
-            tokenizer, pad_to_multiple_of=1, return_tensors="pt", padding=True
+            tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
         ),
     )
     model.config.use_cache = False
