@@ -173,3 +173,8 @@ class PredictArguments(ModelArguments):
         default=100,
         metadata={"help": "The maximum number of new tokens to generate."},
     )
+
+    use_llama_prompt: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether to use the llama prompt."},
+    )

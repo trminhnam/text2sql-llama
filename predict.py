@@ -11,7 +11,7 @@ from tqdm.auto import tqdm
 from transformers import HfArgumentParser
 
 
-from utils.prompter import generate_llama_prompt_sql
+from utils.prompter import generate_llama_prompt_sql, generate_prompt_sql
 from utils.load_dataset import creating_schema, get_context_with_db_name
 from utils.load_model import load_model_with_peft_and_tokenizer
 from utils.arguments import (
@@ -92,7 +92,11 @@ if __name__ == "__main__":
         )
         question = row["question"]
 
-        prompt = generate_llama_prompt_sql(question, context)
+        if predict_args.use_llama_prompt:
+            prompt = generate_llama_prompt_sql(question, context)
+        else:
+            prompt = generate_prompt_sql(question, context)
+
         prediction = predict(model, tokenizer, prompt, device, args=predict_args)
         prediction = get_sql_statement(prediction)
         predictions.append(prediction)
