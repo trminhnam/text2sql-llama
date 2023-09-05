@@ -120,6 +120,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         model.enable_input_require_grads()
 
     # TODO attach lora to the model
+    print("#" * 20)
     if model_args.peft_name_or_path is not None:
         peft_model_id = model_args.peft_name_or_path
         config = PeftConfig.from_pretrained(peft_model_id)
@@ -134,7 +135,8 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         # )
         model = PeftModel.from_pretrained(model, peft_model_id, is_trainable=True)
         print(f"Loaded PEFT model from {peft_model_id}")
-    else:
+        model.print_trainable_parameters()
+    elif model_args.lora_r is not None:
         config = LoraConfig(
             r=model_args.lora_r,
             lora_alpha=model_args.lora_alpha,
@@ -144,6 +146,10 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             task_type="CAUSAL_LM",
         )
         model = get_peft_model(model, config)
-    model.print_trainable_parameters()
+        print("Loaded PEFT model from scratch")
+        model.print_trainable_parameters()
+    else:
+        print("No PEFT model is loaded")
+        print("Using default config")
 
     return model, tokenizer
