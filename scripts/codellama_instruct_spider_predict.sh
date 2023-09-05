@@ -19,7 +19,7 @@ export PYTHONWARNINGS="ignore"
 
 # Model parameters
 # export model_name_or_path=meta-llama/Llama-2-7b-hf
-export peft_name_or_path=codellama_instruct_spider
+export peft_name_or_path=tmnam20/codellama_instruct_spider
 export model_name_or_path=codellama/CodeLlama-7b-Instruct-hf
 
 # dataset parameters
