@@ -45,7 +45,7 @@ export warmup_ratio=0.06
 # Evaluation parameters
 export evaluation_strategy=steps
 export eval_steps=200
-export eval_batch_size=32
+export eval_batch_size=16
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
@@ -105,6 +105,6 @@ python finetune.py \
     --load_in_4bit \
     --bnb_4bit_quant_type "nf4"\
     --bnb_4bit_compute_dtype "bf16" \
-    --bnb_4bit_use_double_quant \
     --bf16 \
     --bf16_full_eval \
+    # --bnb_4bit_use_double_quant \
