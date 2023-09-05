@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_instructtext2sql_ver2
+export SESSION_NAME=codellama_instructtext2sql_chat
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -44,7 +44,7 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=800
+export eval_steps=1000
 export eval_batch_size=8
 export max_eval_samples=1000000
 
