@@ -14,6 +14,7 @@ from transformers import (
     AutoTokenizer,
     BitsAndBytesConfig,
     LlamaTokenizer,
+    CodeLlamaTokenizer,
 )
 
 COMPUTE_DTYPE_MAPPING = {
@@ -76,9 +77,14 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
     )
 
     # TODO: load tokenizer
-    tokenizer_class = (
-        LlamaTokenizer if "llama" in model_args.model_name_or_path else AutoTokenizer
-    )
+    if "codellama" in model_args.model_name_or_path:
+        tokenizer_class = CodeLlamaTokenizer
+    else:
+        tokenizer_class = (
+            LlamaTokenizer
+            if "llama" in model_args.model_name_or_path
+            else AutoTokenizer
+        )
     tokenizer = tokenizer_class.from_pretrained(
         model_args.model_name_or_path,
         padding_side="left",
