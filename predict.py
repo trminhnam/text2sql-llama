@@ -11,7 +11,7 @@ from tqdm.auto import tqdm
 from transformers import HfArgumentParser
 
 
-from utils.prompter import generate_prompt_sql
+from utils.prompter import generate_llama_prompt_sql
 from utils.load_dataset import creating_schema, get_context_with_db_name
 from utils.load_model import load_model_with_peft_and_tokenizer
 from utils.arguments import (
@@ -47,14 +47,15 @@ def preprocess_text(text):
 
 
 def get_sql_statement(prediction):
-    idx = prediction.find("### Response:\n")
-    prediction = prediction[idx + len("### Response:\n") :].strip()
-    if "\n\n" in prediction:
-        prediction = prediction.split("\n\n")[0].strip()
-    if ";" in prediction:
-        prediction = prediction.split(";")[0].strip()
-    prediction = preprocess_text(prediction)
-    return prediction
+    return preprocess_text(prediction)
+    # idx = prediction.find("### Response:\n")
+    # prediction = prediction[idx + len("### Response:\n") :].strip()
+    # if "\n\n" in prediction:
+    #     prediction = prediction.split("\n\n")[0].strip()
+    # if ";" in prediction:
+    #     prediction = prediction.split(";")[0].strip()
+    # prediction = preprocess_text(prediction)
+    # return prediction
 
 
 if __name__ == "__main__":
@@ -91,7 +92,7 @@ if __name__ == "__main__":
         )
         question = row["question"]
 
-        prompt = generate_prompt_sql(question, context)
+        prompt = generate_llama_prompt_sql(question, context)
         prediction = predict(model, tokenizer, prompt, device, args=predict_args)
         prediction = get_sql_statement(prediction)
         predictions.append(prediction)
