@@ -143,19 +143,19 @@ def train():
         return result
 
     def generate_and_tokenize_prompt(data_point):
-        full_prompt = generate_prompt_sql(
-            data_point["question"],
-            data_point["context"],
-            data_point["answer"],
-        )
         user_prompt = generate_prompt_sql(
             data_point["question"],
             data_point["context"],
         )
-        user_prompt_len = len(
-            tokenizer(user_prompt, truncation=True, max_length=model_max_length)[
-                "input_ids"
-            ]
+        user_prompt_ids = tokenizer(
+            user_prompt, truncation=True, max_length=model_max_length
+        )["input_ids"]
+        user_prompt_len = len(user_prompt_ids)
+
+        full_prompt = generate_prompt_sql(
+            data_point["question"],
+            data_point["context"],
+            data_point["answer"],
         )
 
         tokenized_full_prompt = tokenizer(
@@ -166,7 +166,7 @@ def train():
         tokenized_full_prompt["labels"] = [
             IGNORE_INDEX
         ] * user_prompt_len + tokenized_full_prompt["input_ids"].copy()[
-            user_prompt_len:
+            user_prompt_len - 1 :
         ]
         tokenized_full_prompt.pop("attention_mask")
 
