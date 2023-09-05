@@ -12,7 +12,7 @@ from transformers.trainer_utils import get_last_checkpoint
 from utils.another_utils import set_seed
 from utils.arguments import DataArguments, ModelArguments, TextToSqlTrainingArguments
 from utils.load_model import load_model_with_peft_and_tokenizer
-from utils.prompter import generate_prompt_sql
+from utils.prompter import generate_llama_prompt_sql
 from utils.trainer import CustomTrainer
 
 logger = logging.getLogger(__name__)
@@ -143,7 +143,7 @@ def train():
         return result
 
     def generate_and_tokenize_prompt(data_point):
-        user_prompt = generate_prompt_sql(
+        user_prompt = generate_llama_prompt_sql(
             data_point["question"],
             data_point["context"],
         )
@@ -152,7 +152,7 @@ def train():
         )["input_ids"]
         user_prompt_len = len(user_prompt_ids)
 
-        full_prompt = generate_prompt_sql(
+        full_prompt = generate_llama_prompt_sql(
             data_point["question"],
             data_point["context"],
             data_point["answer"],

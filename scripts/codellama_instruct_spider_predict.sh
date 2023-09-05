@@ -18,8 +18,9 @@ export PYTHONWARNINGS="ignore"
 
 
 # Model parameters
-export model_name_or_path=meta-llama/Llama-2-7b-hf
-export peft_name_or_path=tmnam20/llama2_sqlcreatecontext
+# export model_name_or_path=meta-llama/Llama-2-7b-hf
+# export peft_name_or_path=tmnam20/baseline
+export model_name_or_path=codellama/CodeLlama-7b-Instruct-hf
 
 # dataset parameters
 export dataset_dir=dataset/spider
@@ -33,7 +34,6 @@ export output_path=$output_dir/dev_predict.txt
 cd ..
 python predict.py \
     --model_name_or_path $model_name_or_path \
-    --peft_name_or_path $peft_name_or_path \
     --dataset_dir $dataset_dir \
     --output_dir $output_dir \
     --output_path $output_path \
