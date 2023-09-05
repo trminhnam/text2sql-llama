@@ -163,11 +163,11 @@ def train():
             truncation=True,
             max_length=model_max_length,
         )
+
+        ignored_length = user_prompt_len - 1
         tokenized_full_prompt["labels"] = [
             IGNORE_INDEX
-        ] * user_prompt_len + tokenized_full_prompt["input_ids"].copy()[
-            user_prompt_len - 1 :
-        ]
+        ] * ignored_length + tokenized_full_prompt["input_ids"].copy()[ignored_length:]
         tokenized_full_prompt.pop("attention_mask")
 
         return tokenized_full_prompt
