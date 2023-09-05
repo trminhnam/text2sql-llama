@@ -47,15 +47,14 @@ def preprocess_text(text):
 
 
 def get_sql_statement(prediction):
-    return preprocess_text(prediction)
-    # idx = prediction.find("### Response:\n")
-    # prediction = prediction[idx + len("### Response:\n") :].strip()
+    idx = prediction.find("### Response:\n")
+    prediction = prediction[idx + len("### Response:\n") :].strip()
     # if "\n\n" in prediction:
     #     prediction = prediction.split("\n\n")[0].strip()
     # if ";" in prediction:
     #     prediction = prediction.split(";")[0].strip()
-    # prediction = preprocess_text(prediction)
-    # return prediction
+    prediction = preprocess_text(prediction)
+    return prediction
 
 
 if __name__ == "__main__":
