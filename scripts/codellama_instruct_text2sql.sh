@@ -35,7 +35,7 @@ export dataloader_num_workers=8
 # Training parameters
 export train_batch_size=4 # 8
 export learning_rate=3e-4
-export num_train_epochs=16
+export num_train_epochs=8
 export max_steps=-1
 export max_train_samples=10000000
 export gradient_accumulation_steps=16 # 32
@@ -44,7 +44,7 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=200
+export eval_steps=500
 export eval_batch_size=16
 export max_eval_samples=1000000
 
