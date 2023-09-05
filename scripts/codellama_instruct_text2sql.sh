@@ -35,16 +35,16 @@ export dataloader_num_workers=8
 # Training parameters
 export train_batch_size=4 # 8
 export learning_rate=3e-4
-export num_train_epochs=16
+export num_train_epochs=8
 export max_steps=-1
 export max_train_samples=10000000
-export gradient_accumulation_steps=16 # 32
+export gradient_accumulation_steps=8 # 32
 export optim=adamw_bnb_8bit
 export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=200
+export eval_steps=800
 export eval_batch_size=16
 export max_eval_samples=1000000
 
@@ -53,7 +53,7 @@ export hub_model_id=$SESSION_NAME
 export hub_token=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
 export hub_strategy=all_checkpoints
 export report_to=wandb
-export logging_steps=100
+export logging_steps=200
 
 # Directories
 export cache_dir=$BASE_DIR/cache
