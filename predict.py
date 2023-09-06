@@ -57,6 +57,13 @@ def get_sql_statement(prediction):
     return prediction
 
 
+def get_llama_sql_statement(prediction):
+    idx = prediction.find("[/INST] ")
+    prediction = prediction[idx + len("[/INST] ") :].strip()
+    prediction = preprocess_text(prediction)
+    return prediction
+
+
 if __name__ == "__main__":
     parser = HfArgumentParser(
         (
@@ -97,7 +104,12 @@ if __name__ == "__main__":
             prompt = generate_prompt_sql(question, context)
 
         prediction = predict(model, tokenizer, prompt, device, args=predict_args)
-        prediction = get_sql_statement(prediction)
+
+        if predict_args.use_llama_prompt:
+            prediction = get_llama_sql_statement(prediction)
+        else:
+            prediction = get_sql_statement(prediction)
+
         predictions.append(prediction)
 
         if idx % 100 == 0:
