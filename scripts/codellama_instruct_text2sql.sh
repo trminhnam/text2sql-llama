@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_instructtext2sql_chat
+export SESSION_NAME=codellama_instruct_pt_text2sql
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
@@ -107,4 +107,4 @@ python finetune.py \
     --bnb_4bit_compute_dtype "bf16" \
     --bf16 \
     --bf16_full_eval \
-    # --bnb_4bit_use_double_quant \
+    --bnb_4bit_use_double_quant \
