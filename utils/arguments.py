@@ -34,7 +34,7 @@ from transformers import (
 class ModelArguments:
     # TODO: Base model parameters
     model_name_or_path: Optional[str] = field(default=None)
-    model_name_or_path_subfolder: Optional[str] = field(default=None)
+    model_name_or_path_subfolder: Optional[str] = field(default="")
 
     # TODO: quantization parameters
     load_in_8bit: bool = field(
