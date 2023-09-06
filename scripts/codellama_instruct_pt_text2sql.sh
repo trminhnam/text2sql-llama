@@ -44,7 +44,7 @@ export warmup_ratio=0.06
 
 # Evaluation parameters
 export evaluation_strategy=steps
-export eval_steps=1000
+export eval_steps=2000
 export eval_batch_size=8
 export max_eval_samples=1000000
 
@@ -53,7 +53,7 @@ export hub_model_id=$SESSION_NAME
 export hub_token=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
 export hub_strategy=all_checkpoints
 export report_to=wandb
-export logging_steps=200
+export logging_steps=1000
 
 # Directories
 export cache_dir=$BASE_DIR/cache
