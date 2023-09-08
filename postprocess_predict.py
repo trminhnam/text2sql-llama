@@ -43,14 +43,12 @@ if __name__ == "__main__":
     FILE_PATH = args.file_path
     with open(FILE_PATH, "r", encoding="utf-8") as f:
         data = f.readlines()
-        for line in data:
-            line = line.strip()
-            line = postprocess(line)
 
     CORRECTED_FILE_PATH = os.path.join(
         os.path.dirname(FILE_PATH), "dev_predict_corrected.txt"
     )
     with open(CORRECTED_FILE_PATH, "w", encoding="utf-8") as f:
         for line in data:
+            line = line.strip()
             line = postprocess(line)
             f.write(line + "\n")
