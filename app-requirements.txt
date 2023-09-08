@@ -1,0 +1,39 @@
+# ref: https://github.com/pytorch/pytorch/issues/50032
+# https://stackoverflow.com/questions/60912744/install-pytorch-from-requirements-txt
+-f https://download.pytorch.org/whl/torch_stable.html
+torch==1.9.1+cu111
+torchvision==0.10.0+cu111
+torchaudio==0.9.0+cu111
+transformers @ git+https://github.com/huggingface/transformers.git@main 
+datasets
+accelerate
+evaluate
+peft @ git+https://github.com/huggingface/peft
+sentencepiece != 0.1.92
+seqeval
+protobuf
+scikit-learn
+pytest
+ipykernel
+ipywidgets
+tqdm
+zstandard
+wandb
+huggingface_hub
+safetensors
+bitsandbytes
+nltk
+rouge_score
+absl-py
+jupyter
+sentence-transformers
+wrapt-timeout-decorator
+retry
+openai
+tiktoken
+Cython
+gdown
+langdetect
+googletrans-python
+python-dotenv
+Flask
