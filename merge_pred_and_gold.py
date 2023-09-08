@@ -70,9 +70,9 @@ if __name__ == "__main__":
 
         datapoint["context"] = context
         datapoint["question"] = question
-        datapoint["gold"] = row["query"]
-        datapoint["pred"] = pred_data[idx]
-        datapoint["is_identical"] = is_identical(row["query"], pred_data[idx])
+        datapoint["gold"] = preprocess_text(row["query"])
+        datapoint["pred"] = preprocess_text(pred_data[idx])
+        datapoint["is_identical"] = is_identical(datapoint["gold"], datapoint["pred"])
 
         data.append(datapoint)
 
