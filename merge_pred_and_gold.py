@@ -47,9 +47,6 @@ def argparser():
 if __name__ == "__main__":
     args = argparser()
 
-    # make output dirs
-    os.makedirs(os.path.dirname(args.output_path), exist_ok=True)
-
     # load spider dataset: schema, primary key, foreign key
     spider_schema, spider_primary, spider_foreign = creating_schema(
         os.path.join(args.dataset_dir, "tables.json")
