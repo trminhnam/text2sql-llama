@@ -1,17 +1,9 @@
-import argparse
-import glob
-import logging
-import math
-import os
-import re
-import sys
-from dataclasses import dataclass, field
+import json
+from dataclasses import dataclass, field, asdict
 from typing import Dict, List, Optional, Tuple, Union
 
 import datasets
 import numpy as np
-import torch
-import transformers
 from datasets import DatasetDict, concatenate_datasets, load_dataset
 from peft import (
     LoraConfig,
@@ -179,3 +171,15 @@ class PredictArguments(ModelArguments):
         default=False,
         metadata={"help": "Whether to use the llama prompt."},
     )
+
+    def __str__(self):
+        self_as_dict = asdict(self)
+
+        self_as_dict = {
+            k: f"<{k.upper()}>" if k.endswith("_token") else v
+            for k, v in self_as_dict.items()
+        }
+        return f"{self.__class__.__name__}" + json.dumps(self_as_dict, indent=2) + "\n"
+
+        attrs_as_str = [f"{k}={v},\n" for k, v in sorted(self_as_dict.items())]
+        return f"{self.__class__.__name__}(\n{''.join(attrs_as_str)})"

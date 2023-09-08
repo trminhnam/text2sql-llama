@@ -4,17 +4,17 @@ import torch
 import transformers
 from peft import (
     LoraConfig,
+    PeftConfig,
+    PeftModel,
     get_peft_model,
     prepare_model_for_kbit_training,
-    PeftModel,
-    PeftConfig,
 )
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
-    LlamaTokenizer,
     CodeLlamaTokenizer,
+    LlamaTokenizer,
 )
 
 COMPUTE_DTYPE_MAPPING = {
@@ -115,7 +115,9 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
     if model_args.load_in_8bit or model_args.load_in_4bit:
         model = prepare_model_for_kbit_training(
             model=model,
-            use_gradient_checkpointing=training_args.gradient_checkpointing,
+            use_gradient_checkpointing=training_args.gradient_checkpointing
+            if training_args is not None
+            else False,
         )
     else:
         model.enable_input_require_grads()
