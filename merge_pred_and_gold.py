@@ -80,7 +80,7 @@ if __name__ == "__main__":
     with open(
         os.path.join(
             os.path.dirname(args.pred_file_path),
-            os.path.basename(args.pred_file_path) + "compare.json",
+            os.path.basename(args.pred_file_path) + ".compare.json",
         ),
         "w",
         encoding="utf-8",
