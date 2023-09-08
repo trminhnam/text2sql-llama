@@ -44,6 +44,7 @@ if __name__ == "__main__":
     with open(FILE_PATH, "r", encoding="utf-8") as f:
         data = f.readlines()
         for line in data:
+            line = line.strip()
             line = postprocess(line)
 
     CORRECTED_FILE_PATH = os.path.join(
