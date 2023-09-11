@@ -1,18 +1,16 @@
-import pandas as pd
-import time
+import argparse
+import json
 import os
 import sys
-import argparse
-import torch
+import time
+
+import pandas as pd
 import regex as re
-import json
-
+import torch
 from tqdm.auto import tqdm
-
-from utils.load_dataset import creating_schema, get_context_with_db_name
 from transformers import HfArgumentParser
 
-import argparse
+from utils.load_dataset import creating_schema, get_context_with_db_name
 
 
 def preprocess_text(text):

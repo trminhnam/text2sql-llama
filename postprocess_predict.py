@@ -1,7 +1,7 @@
-import os
-import json
-import re
 import argparse
+import json
+import os
+import re
 
 FILE_PATH = "./dev_predict.txt"
 

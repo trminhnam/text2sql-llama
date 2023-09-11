@@ -1,0 +1,10 @@
+{
+    "model_name_or_path": "codellama/CodeLlama-7b-Instruct-hf",
+    "peft_name_or_path": "tmnam20/codellama_instruct_spider_e10",
+    "load_in_8bit": false,
+    "load_in_4bit": true,
+    "bnb_4bit_quant_type": "nf4",
+    "bnb_4bit_compute_dtype": "bf16",
+    "bnb_4bit_use_double_quant": true,
+    "use_llama_prompt": true
+}

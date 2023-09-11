@@ -1,23 +1,18 @@
-import pandas as pd
-import time
+import argparse
 import os
 import sys
-import argparse
-import torch
+import time
+
+import pandas as pd
 import regex as re
-
+import torch
 from tqdm.auto import tqdm
-
 from transformers import HfArgumentParser
 
-
-from utils.prompter import generate_llama_prompt_sql, generate_prompt_sql
+from utils.arguments import PredictArguments, TextToSqlTrainingArguments
 from utils.load_dataset import creating_schema, get_context_with_db_name
 from utils.load_model import load_model_with_peft_and_tokenizer
-from utils.arguments import (
-    TextToSqlTrainingArguments,
-    PredictArguments,
-)
+from utils.prompter import generate_llama_prompt_sql, generate_prompt_sql
 
 
 @torch.no_grad()

@@ -4,17 +4,17 @@ import torch
 import transformers
 from peft import (
     LoraConfig,
+    PeftConfig,
+    PeftModel,
     get_peft_model,
     prepare_model_for_kbit_training,
-    PeftModel,
-    PeftConfig,
 )
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
-    LlamaTokenizer,
     CodeLlamaTokenizer,
+    LlamaTokenizer,
 )
 
 COMPUTE_DTYPE_MAPPING = {
@@ -96,26 +96,14 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.unk_token
         tokenizer.pad_token_id = tokenizer.unk_token_id
-    #     smart_tokenizer_and_embedding_resize(
-    #         special_tokens_dict=dict(pad_token="<pad>"),
-    #         tokenizer=tokenizer,
-    #         model=model,
-    #     )
-    # if "llama" in model_args.model_name_or_path:
-    #     tokenizer.add_special_tokens(
-    #         {
-    #             "eos_token": tokenizer.eos_token or "<eos>",
-    #             "bos_token": tokenizer.bos_token or "<bos>",
-    #             "unk_token": tokenizer.unk_token or "<unk>",
-    #             "pad_token": tokenizer.pad_token or "<pad>",
-    #         }
-    #     )
 
     # TODO: prepare model for kbit training
     if model_args.load_in_8bit or model_args.load_in_4bit:
         model = prepare_model_for_kbit_training(
             model=model,
-            use_gradient_checkpointing=training_args.gradient_checkpointing,
+            use_gradient_checkpointing=training_args.gradient_checkpointing
+            if training_args is not None
+            else False,
         )
     else:
         model.enable_input_require_grads()
