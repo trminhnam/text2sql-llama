@@ -1,6 +1,6 @@
 export BASE_DIR=.
 export PROJECT_NAME=text2sql
-export SESSION_NAME=codellama_finetune_spider
+export SESSION_NAME=codellama_instruct_pt_text2sql_ft_spider
 export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
