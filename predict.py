@@ -67,9 +67,19 @@ if __name__ == "__main__":
         )
     )
     predict_args, training_args = parser.parse_args_into_dataclasses()
+    print(f"Predict args: {predict_args}")
 
     # make output dirs
-    os.makedirs(os.path.dirname(predict_args.output_path), exist_ok=True)
+    base_dir = os.path.dirname(predict_args.output_path)
+    file_name = os.path.basename(predict_args.output_path)
+    save_dir = (
+        base_dir
+        if predict_args.peft_name_or_path_subfolder
+        else os.path.join(base_dir, predict_args.peft_name_or_path_subfolder)
+    )
+    os.makedirs(save_dir, exist_ok=True)
+    predict_args.output_path = os.path.join(save_dir, file_name)
+    print(f"Output path to: {predict_args.output_path}")
 
     # load spider dataset: schema, primary key, foreign key
     spider_schema, spider_primary, spider_foreign = creating_schema(
@@ -85,16 +95,6 @@ if __name__ == "__main__":
         "cuda" if (torch.cuda.is_available() and not training_args.no_cuda) else "cpu"
     )
     model.to(device)
-
-    base_dir = os.path.dirname(predict_args.output_path)
-    file_name = os.path.basename(predict_args.output_path)
-    save_dir = (
-        base_dir
-        if predict_args.peft_name_or_path_subfolder
-        else os.path.join(base_dir, predict_args.peft_name_or_path_subfolder)
-    )
-    predict_args.output_path = os.path.join(save_dir, file_name)
-    print(f"Output path to: {predict_args.output_path}")
 
     predictions = []
     for idx, row in tqdm(dev_dataset.iterrows(), total=len(dev_dataset)):
