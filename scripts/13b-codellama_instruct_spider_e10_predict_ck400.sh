@@ -36,6 +36,7 @@ cd ..
 python predict.py \
     --model_name_or_path $model_name_or_path \
     --peft_name_or_path $peft_name_or_path \
+    --peft_name_or_path_subfolder $peft_name_or_path_subfolder \
     --dataset_dir $dataset_dir \
     --output_dir $output_dir \
     --output_path $output_path \
