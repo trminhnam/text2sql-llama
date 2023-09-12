@@ -70,7 +70,7 @@ class ModelArguments:
             "help": "The name or path of the pretrained LoRA model to use for the adapter."
         },
     )
-    lora_name_or_path_subfolder = field(
+    lora_name_or_path_subfolder: str = field(
         default="",
         metadata={
             "help": "The subfolder of the pretrained LoRA model to use for the adapter."
