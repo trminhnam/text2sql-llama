@@ -70,6 +70,12 @@ class ModelArguments:
             "help": "The name or path of the pretrained LoRA model to use for the adapter."
         },
     )
+    lora_name_or_path_subfolder = field(
+        default="",
+        metadata={
+            "help": "The subfolder of the pretrained LoRA model to use for the adapter."
+        },
+    )
 
     lora_r: int = field(default=8, metadata={"help": "Lora rank."})
     lora_alpha: int = field(default=16, metadata={"help": "Lora alpha."})

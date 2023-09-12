@@ -86,6 +86,16 @@ if __name__ == "__main__":
     )
     model.to(device)
 
+    base_dir = os.path.dirname(predict_args.output_path)
+    file_name = os.path.basename(predict_args.output_path)
+    save_dir = (
+        base_dir
+        if predict_args.peft_name_or_path_subfolder
+        else os.path.join(base_dir, predict_args.peft_name_or_path_subfolder)
+    )
+    predict_args.output_path = os.path.join(save_dir, file_name)
+    print(f"Output path to: {predict_args.output_path}")
+
     predictions = []
     for idx, row in tqdm(dev_dataset.iterrows(), total=len(dev_dataset)):
         context = get_context_with_db_name(
@@ -123,3 +133,5 @@ if __name__ == "__main__":
     with open(predict_args.output_path, "w", encoding="utf-8") as f:
         for prediction in predictions:
             f.write(prediction + "\n")
+
+    print(f"Saved predictions to {predict_args.output_path}")

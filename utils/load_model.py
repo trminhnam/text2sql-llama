@@ -112,7 +112,9 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
     print("#" * 20)
     if model_args.peft_name_or_path is not None:
         peft_model_id = model_args.peft_name_or_path
-        config = PeftConfig.from_pretrained(peft_model_id)
+        config = PeftConfig.from_pretrained(
+            peft_model_id, subfolder=model_args.peft_name_or_path_subfolder
+        )
         # model = (
         #     AutoModelForCausalLM.from_pretrained(
         #         config.base_model_name_or_path,
@@ -122,8 +124,17 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         #     if config.base_model_name_or_path != model_args.model_name_or_path
         #     else model
         # )
-        model = PeftModel.from_pretrained(model, peft_model_id, is_trainable=True)
-        print(f"Loaded PEFT model from {peft_model_id}")
+        model = PeftModel.from_pretrained(
+            model,
+            peft_model_id,
+            is_trainable=True,
+            subfolder=model_args.peft_name_or_path_subfolder,
+        )
+        print(
+            f"Loaded PEFT model from {peft_model_id}/{model_args.peft_name_or_path_subfolder}"
+            if model_args.peft_name_or_path_subfolder
+            else f"Loaded PEFT model from {peft_model_id}"
+        )
         model.print_trainable_parameters()
     elif model_args.lora_r is not None:
         config = LoraConfig(
