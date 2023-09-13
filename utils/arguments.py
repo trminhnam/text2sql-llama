@@ -178,6 +178,31 @@ class PredictArguments(ModelArguments):
         metadata={"help": "Whether to use the llama prompt."},
     )
 
+    do_sample: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether to use the sampling strategy."},
+    )
+
+    num_beams: Optional[int] = field(
+        default=1,
+        metadata={"help": "The number of beams to use."},
+    )
+
+    top_k: Optional[int] = field(
+        default=50,
+        metadata={"help": "The number of top k tokens to use."},
+    )
+
+    top_p: Optional[float] = field(
+        default=1.0,
+        metadata={"help": "The number of top p tokens to use."},
+    )
+
+    temperature: Optional[float] = field(
+        default=1.0,
+        metadata={"help": "The temperature to use."},
+    )
+
     def __str__(self):
         self_as_dict = asdict(self)
 
