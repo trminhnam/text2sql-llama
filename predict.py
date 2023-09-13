@@ -23,10 +23,13 @@ def predict(model, tokenizer, prompt, device="cuda", args={}):
     outputs = model.generate(
         input_ids=inputs["input_ids"],
         attention_mask=inputs["attention_mask"],
+        num_return_sequences=1,
         max_new_tokens=args.max_new_tokens,
-        # num_beams=5,
-        # early_stopping=True,
-        # num_return_sequences=1,
+        do_sample=args.do_sample,
+        num_beams=args.num_beams,
+        top_k=args.top_k,
+        top_p=args.top_p,
+        temperature=args.temperature,
     )
     return tokenizer.batch_decode(
         outputs.detach().cpu().numpy(), skip_special_tokens=True
@@ -74,7 +77,7 @@ if __name__ == "__main__":
     file_name = os.path.basename(predict_args.output_path)
     save_dir = (
         base_dir
-        if predict_args.peft_name_or_path_subfolder
+        if not predict_args.peft_name_or_path_subfolder
         else os.path.join(base_dir, predict_args.peft_name_or_path_subfolder)
     )
     os.makedirs(save_dir, exist_ok=True)
