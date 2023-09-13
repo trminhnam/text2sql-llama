@@ -45,7 +45,7 @@ export warmup_ratio=0.06
 # Evaluation parameters
 export evaluation_strategy=steps
 export eval_steps=2000
-export eval_batch_size=8
+export eval_batch_size=4
 export max_eval_samples=1000000
 
 # logging with wandb and push to hub
