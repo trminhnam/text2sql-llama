@@ -48,7 +48,7 @@ python predict.py \
     --cache_dir $cache_dir \
     --load_in_4bit \
     --bnb_4bit_quant_type "nf4"\
-    --bnb_4bit_compute_dtype "bf16" \
+    --bnb_4bit_compute_dtype "fp16" \
     --bnb_4bit_use_double_quant \
     --bf16 \
     --bf16_full_eval \
