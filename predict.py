@@ -80,6 +80,8 @@ if __name__ == "__main__":
         if not predict_args.peft_name_or_path_subfolder
         else os.path.join(base_dir, predict_args.peft_name_or_path_subfolder)
     )
+    if predict_args.num_beams > 1:
+        save_dir = os.path.join(save_dir, f"beam_{predict_args.num_beams}")
     os.makedirs(save_dir, exist_ok=True)
     predict_args.output_path = os.path.join(save_dir, file_name)
     print(f"Output path to: {predict_args.output_path}")
