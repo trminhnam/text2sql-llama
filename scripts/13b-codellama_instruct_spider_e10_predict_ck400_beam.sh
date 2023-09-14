@@ -50,8 +50,8 @@ python predict.py \
     --bnb_4bit_quant_type "nf4"\
     --bnb_4bit_compute_dtype "fp16" \
     --bnb_4bit_use_double_quant \
-    --bf16 \
-    --bf16_full_eval \
     --use_llama_prompt \
     --num_beams $num_beams \
     --do_sample $do_sample \
+    # --bf16 \
+    # --bf16_full_eval \
