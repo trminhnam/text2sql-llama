@@ -1,0 +1,18 @@
+# Define the root rule for an SQL SELECT statement
+root ::= "SELECT " (columns | "*") " FROM " table (joinClause)* " WHERE " conditions (" GROUP BY " columnName)? (" HAVING " conditions)? (" ORDER BY " columnName ("," columnName)*)? ";"?
+
+# Define rules for columns, table, conditions, and functions
+columns ::= (column | aggregateFunction) ("," (column | aggregateFunction))*
+column ::= columnName (" AS " alias)?
+alias ::= [a-zA-Z_][a-zA-Z0-9_]*
+
+# Define JOIN clause rules
+joinClause ::= (" INNER JOIN " table " ON " columnName "=" columnName) | (" LEFT JOIN " table " ON " columnName "=" columnName) | (" RIGHT JOIN " table " ON " columnName "=" columnName)
+
+# Define aggregate function rules
+aggregateFunction ::= "COUNT(" columnName ")" | "MAX(" columnName ")" | "MIN(" columnName ")" | "AVG(" columnName ")" | "SUM(" columnName ")"
+                  
+# Define GROUP BY and HAVING clause rules
+columnName ::= [a-zA-Z_][a-zA-Z0-9_]*
+
+# Rest of the rules for table, conditions, logical operators, and comparison operators remain the same as in the previous response

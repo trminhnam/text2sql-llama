@@ -1,0 +1,40 @@
+# Define the root rule for an SQL SELECT statement
+root ::= "SELECT" ws select-list "FROM" ws table-name (ws "WHERE" ws condition)? (ws "ORDER BY" ws order-by-clause)? (ws "LIMIT" ws number)? end-of-statement
+
+# Define the select list rule for selecting columns
+select-list ::= column-name (ws "," ws column-name)*
+
+# Define the table name rule for specifying the table
+table-name ::= identifier
+
+# Define the condition rule for specifying the WHERE clause
+condition ::= column-name ws comparison-operator ws value
+
+# Define various comparison operators
+comparison-operator ::= "=" | "!=" | "<" | ">" | "<=" | ">="
+
+# Define a value rule for literals
+value ::= string-literal | number
+
+# Define an order by clause for sorting results
+order-by-clause ::= column-name (ws "," ws column-name)*
+  
+# Define an identifier for table and column names
+identifier ::= [A-Za-z_][A-Za-z0-9_]*
+
+# Define a string literal
+string-literal ::= "'" ([^']+ | "''")* "'"
+
+# Define a number (integer or floating-point)
+number ::= [0-9]+ ("." [0-9]+)?
+
+# Define optional whitespace
+ws ::= [ \t\n]*
+
+# Define comments
+comment ::= "#" [^\n]*
+
+# Define newlines
+newline ::= "\n"
+
+end-of-statement ::= ";" | newline | "</s>" | ""
