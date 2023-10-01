@@ -75,6 +75,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         subfolder=model_args.model_name_or_path_subfolder,
         quantization_config=bnb_config,
         cache_dir=model_args.cache_dir,
+        device_map="auto",
     )
 
     # TODO: load tokenizer

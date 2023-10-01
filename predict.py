@@ -163,9 +163,12 @@ if __name__ == "__main__":
 
     predictions = []
     for idx, row in tqdm(dev_dataset.iterrows(), total=len(dev_dataset)):
-        context = get_context_with_db_name(
-            row["db_id"], spider_schema, spider_primary, spider_foreign
-        )
+        if "context" in row:
+            context = row["context"]
+        else:
+            context = get_context_with_db_name(
+                row["db_id"], spider_schema, spider_primary, spider_foreign
+            )
         question = row["question"]
 
         if predict_args.use_llama_prompt:
