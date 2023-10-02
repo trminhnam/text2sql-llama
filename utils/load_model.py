@@ -54,10 +54,18 @@ def smart_tokenizer_and_embedding_resize(
         output_embeddings[-num_new_tokens:] = output_embeddings_avg
 
 
+def has_attr_and_true(obj, attr):
+    return hasattr(obj, attr) and getattr(obj, attr)
+
+
 def load_model_with_peft_and_tokenizer(model_args, training_args):
     # TODO: prepare quantization config
     bnb_config = None
-    if model_args.load_in_8bit or model_args.load_in_4bit:
+    # if model_args.load_in_8bit or model_args.load_in_4bit:
+    if (
+        has_attr_and_true(model_args, "load_in_8bit")
+        or has_attr_and_true(model_args, "load_in_4bit")
+    ) and not has_attr_and_true(model_args, "quant_mode"):
         bnb_config = BitsAndBytesConfig(
             load_in_8bit=model_args.load_in_8bit,
             load_in_4bit=model_args.load_in_4bit,
@@ -99,15 +107,18 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
         tokenizer.pad_token_id = tokenizer.unk_token_id
 
     # TODO: prepare model for kbit training
-    if model_args.load_in_8bit or model_args.load_in_4bit:
-        model = prepare_model_for_kbit_training(
-            model=model,
-            use_gradient_checkpointing=training_args.gradient_checkpointing
-            if training_args is not None
-            else False,
-        )
-    else:
-        model.enable_input_require_grads()
+    if not has_attr_and_true(model_args, "quant_mode"):
+        if has_attr_and_true(model_args, "load_in_8bit") or has_attr_and_true(
+            model_args, "load_in_4bit"
+        ):
+            model = prepare_model_for_kbit_training(
+                model=model,
+                use_gradient_checkpointing=training_args.gradient_checkpointing
+                if training_args is not None
+                else False,
+            )
+        else:
+            model.enable_input_require_grads()
 
     # TODO attach lora to the model
     print("#" * 20)
