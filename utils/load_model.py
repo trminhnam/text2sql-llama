@@ -144,6 +144,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             subfolder=model_args.peft_name_or_path_subfolder,
             device_map="auto",
             offload_dir="",
+            offload_folder=".",
         )
         print(
             f"Loaded PEFT model from {peft_model_id}/{model_args.peft_name_or_path_subfolder}"
