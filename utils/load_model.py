@@ -152,7 +152,7 @@ def load_model_with_peft_and_tokenizer(model_args, training_args):
             else f"Loaded PEFT model from {peft_model_id}"
         )
         model.print_trainable_parameters()
-    elif model_args.lora_r is not None:
+    elif has_attr_and_true(model_args, "lora_r"):
         config = LoraConfig(
             r=model_args.lora_r,
             lora_alpha=model_args.lora_alpha,
