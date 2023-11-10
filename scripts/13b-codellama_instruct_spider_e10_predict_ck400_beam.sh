@@ -5,13 +5,13 @@ export PROJECT_DIR=$BASE_DIR/$PROJECT_NAME
 export SESSION_DIR=$PROJECT_DIR/$SESSION_NAME
 
 # Wandb project management
-export WANDB_API_KEY=0c060a85ef04e236bfd8cedc8cb41196be934a21
+export WANDB_API_KEY=<WANDB_TOKEN>
 export WANDB_PROJECT=$PROJECT_NAME
 export WANDB_RUN=$SESSION_NAME
 
 wandb login $WANDB_API_KEY
 
-huggingface-cli login --token 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 --add-to-git-credential
+huggingface-cli login --token <HUGGINGFACE_TOKEN> --add-to-git-credential
 
 # Description: Script for training and evaluating language adapter
 export PYTHONWARNINGS="ignore"
